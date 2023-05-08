@@ -19,7 +19,7 @@ export const authOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    session: async ({token: JWT, session: Session}) => {
+    session: async ({token, session }) => {
       if (session?.user && token?.sub) {
         session.user.id = token.sub;
       }
@@ -28,4 +28,4 @@ export const authOptions = {
   }
 }
 
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
