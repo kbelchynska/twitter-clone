@@ -2,8 +2,8 @@ import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 export default function () {
-  const {data:session, status:sessionStatus} = useSession;
-  const [userInfo, setUserInfo] = useState();
+  const {data:session, status:sessionStatus} = useSession();
+  const [userInfo, setUserInfo] = useState(null);
   const [status, setStatus] = useState('loading');
 
   function getUserInfo() {
@@ -24,5 +24,5 @@ export default function () {
   }, [sessionStatus]);
 
 
-  return {userInfo, status}
+  return {userInfo, setUserInfo, status};
 }
