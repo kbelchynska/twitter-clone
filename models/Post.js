@@ -1,4 +1,4 @@
-import mongoose, {Schema} from "mongoose"
+import mongoose, {Schema, models, model} from "mongoose"
 
 const PostSchema = new Schema({
     author: {type:mongoose.Types.ObjectId, ref: 'User'},
