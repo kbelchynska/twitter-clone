@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PostContent from "../components/PostConetnt";
+import Layout from "../components/Layout";
 
 export default function Home() {
   const {userInfo, status:userInfoStatus} = useUserInfo();
@@ -29,7 +30,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-lg mx-auto border-l border-r border-twitterBorder">
+    <Layout>
       <h1 className="text-lg font-bold p-4">Home</h1>
       <PostForm onPost={() => {fetchHomePosts();}} />
       <div className="">
@@ -39,6 +40,6 @@ export default function Home() {
           </div>
         })}
       </div>
-    </div>
+    </Layout>
   )
 }
