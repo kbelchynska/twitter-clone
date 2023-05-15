@@ -29,7 +29,7 @@ export default function PostContent({text, author, createdAt, _id, big=false}) {
                             <Link href={`/${author.username}/status/${_id}`}>
                                 {text}
                             </Link>
-                            <PostButtons />
+                            <PostButtons id={_id} />
                         </div>
                     )}
                 </div>
@@ -51,7 +51,7 @@ export default function PostContent({text, author, createdAt, _id, big=false}) {
                             )}
                         </div>
                     )}
-                    <PostButtons />
+                    <PostButtons id={_id} />
                 </div>
             )}
         </div>
