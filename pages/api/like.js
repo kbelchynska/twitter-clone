@@ -2,6 +2,14 @@ import { initMongoose } from "../../lib/mongoose";
 import { authOptions } from "./auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import Like from "../../models/Like";
+import Post from "../../models/Post";
+
+async function updateLikeCount(postId) {
+    const post = await Post.findById(postId);
+    post.likesCount = await Like.countDocuments({post:postId});
+    await post.save();
+   
+}
 
 export default async function handle(req,res) {
     await initMongoose();
@@ -12,9 +20,11 @@ export default async function handle(req,res) {
     const existingLike = await Like.findOne({author:userId,post:postId});
     if (existingLike) {
         await existingLike.remove();
+        await updateLikeCount(postId);
         res.json(null);
     } else {
         const like = await Like.create({author:userId,post:postId});
+        await updateLikeCount(postId);
         res.json({like});
     }
 }

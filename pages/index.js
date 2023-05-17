@@ -1,32 +1,49 @@
 import useUserInfo from "../hooks/useUserInfo";
 import UsernameForm from "../components/UsernameForm";
 import PostForm from "../components/PostForm";
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import PostContent from "../components/PostConetnt";
 import Layout from "../components/Layout";
+import { useRouter } from "next/router";
 
 export default function Home() {
-  const {userInfo, status:userInfoStatus} = useUserInfo();
+
+  const {data:session} = useSession();
+  const {userInfo, setUserInfo, status:userInfoStatus} = useUserInfo();
   const [posts, setPosts] = useState([]);
+  const [idsLikedByMe, setIdsLikedByMe] = useState([]);
+  const router = useRouter();
 
   function fetchHomePosts() {
     axios.get('/api/posts').then(response => {
-      setPosts(response.data);
+      setPosts(response.data.posts);
+      setIdsLikedByMe(response.data.idsLikedByMe);
     });
+  }
+
+  async function logout() {
+    setUserInfo(null);
+    await signOut();
   }
 
   useEffect(() => {
     fetchHomePosts();
+
   }, [])
 
   if(userInfoStatus === 'loading') {
     return 'loading user info';
   }
 
-  if(!userInfo?.username) {
+  if(userInfo && !userInfo?.username) {
     return <UsernameForm />;
+  }
+
+  if(!userInfo) {
+    router.push('/login');
+    return 'no user info';
   }
 
   return (
@@ -36,10 +53,15 @@ export default function Home() {
       <div className="">
         {posts.length > 0 && posts.map(post => {
           <div className="border-t border-twitterBorder p-5 ">
-            <PostContent {...post} />
+            <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)} />
           </div>
         })}
       </div>
+      {userInfo && (
+        <div className="p-5 text-center border-t border-twitterBorder">
+          <button onClick={logout} className="bg-twitterWhite text-black px-5 py-2 rounded-full">Logout</button>
+        </div>
+      )}
     </Layout>
   )
 }

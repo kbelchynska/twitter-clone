@@ -10,6 +10,10 @@ export default function () {
     if (sessionStatus === 'loading') {
       return;
     }
+    if(session?.user?.id) {
+      setStatus('unauthenticated');
+      return;
+    }
     fetch('/api/users?id='+session.user.id)
       .then(response => {
         response.json().then(json => {
