@@ -1,14 +1,17 @@
-import Layout from "@/components/Layout";
+import Layout from "../../components/Layout";
 import PostContent from "../components/PostConetnt";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import useUserInfo from "../../hooks/useUserInfo";
+import PostForm from "../../components/PostForm";
 
 export default function PostPage() {
     const router = useRouter();
     const {id} = router.query;
     const [post, setPost] = useState();
+    const {userInfo} = useUserInfo
 
     useEffect(() => {
         if (!id) {
@@ -34,6 +37,14 @@ export default function PostPage() {
                     <PostContent {...post} big />
                 </div>
             )}
+            {!!userInfo && (
+                <div className="border-t border-twitterBordrer py-5">
+                    <PostForm onPost={() => {}} compact placeholder={'Tweet your reply'} />
+                </div>
+            )}
+            <div className="border-t border-twitterBorder">
+                replies go here
+            </div>
         </Layout>
     )
 }
