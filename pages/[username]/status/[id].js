@@ -11,6 +11,8 @@ export default function PostPage() {
     const router = useRouter();
     const {id} = router.query;
     const [post, setPost] = useState();
+    const [replies, setReplies] = useState([]);
+    const [repliesLikedByMe,setRepliesLikedByMe] = useState();
     const {userInfo} = useUserInfo
 
     useEffect(() => {
@@ -21,6 +23,11 @@ export default function PostPage() {
             .then(response => {
                 setPost(response.data.post);
             });
+        axios.get('api/posts?parent='+id)
+            then(response => {
+                setReplies(response.data.posts);
+                setRepliesLikedByMe(response.data.idsLikedByMe);
+            })
     }, [id])
     return (
         <Layout>
@@ -39,11 +46,21 @@ export default function PostPage() {
             )}
             {!!userInfo && (
                 <div className="border-t border-twitterBordrer py-5">
-                    <PostForm onPost={() => {}} compact placeholder={'Tweet your reply'} />
+                    <PostForm
+                        onPost={() => {}}
+                        parent={id}
+                        compact
+                        placeholder={'Tweet your reply'}
+
+                    />
                 </div>
             )}
-            <div className="border-t border-twitterBorder">
-                replies go here
+            <div className="">
+                {replies.length > 0 && replies.map(reply => (
+                    <div className="p-5 border-t border-twitterBorder">
+                        <PostContent {...reply} likedByMe={repliesLikedByMe.includes(reply._id)} />
+                    </div>
+                ))}
             </div>
         </Layout>
     )

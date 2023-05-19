@@ -3,13 +3,13 @@ import useUserInfo from "../hooks/useUserInfo"
 import axios from "axios";
 import Avatar from "./Avatar";
 
-export default function PostForm ({onPost, compact, placeholder='What\'s happening?'}) {
+export default function PostForm ({onPost, compact, parent, placeholder='What\'s happening?'}) {
     const {userInfo,status} = useUserInfo();
     const [text, setText] = useState('');
 
     async function handlePostSubmit(e) {
       e.preventDefault();
-      await axios.post('/api/posts', {text});
+      await axios.post('/api/posts', {text, parent});
       setText('');
       if(onPost) {
         onPost();
