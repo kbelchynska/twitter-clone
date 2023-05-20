@@ -14,6 +14,7 @@ export default async function handler(req, res) {
             const post = await Post.findById(id).populate('author');
             res.json({post});
         } else {
+            const parent = req.query || null;
             const posts = await Post
                 .find({parent:null})
                 .populate('author')
@@ -39,6 +40,11 @@ export default async function handler(req, res) {
             text,
             parent,
         });
+        if (parent) {
+            const parentPost = await Post.findById(parent);
+            parentPost.commentsCount = await Post.countDocuments({parent});
+            await parentPost.save();
+        }
         res.json(post);
     }
 }

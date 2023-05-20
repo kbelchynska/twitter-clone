@@ -7,6 +7,18 @@ import Link from "next/link";
 import useUserInfo from "../../hooks/useUserInfo";
 import PostForm from "../../components/PostForm";
 
+function fetchData() {
+    axios.get('/api/posts?id='+id)
+            .then(response => {
+                setPost(response.data.post);
+            });
+        axios.get('api/posts?parent='+id)
+            then(response => {
+                setReplies(response.data.posts);
+                setRepliesLikedByMe(response.data.idsLikedByMe);
+            })
+}
+
 export default function PostPage() {
     const router = useRouter();
     const {id} = router.query;
@@ -19,15 +31,7 @@ export default function PostPage() {
         if (!id) {
             return;
         }
-        axios.get('/api/posts?id='+id)
-            .then(response => {
-                setPost(response.data.post);
-            });
-        axios.get('api/posts?parent='+id)
-            then(response => {
-                setReplies(response.data.posts);
-                setRepliesLikedByMe(response.data.idsLikedByMe);
-            })
+        fetchData();
     }, [id])
     return (
         <Layout>
@@ -47,7 +51,7 @@ export default function PostPage() {
             {!!userInfo && (
                 <div className="border-t border-twitterBordrer py-5">
                     <PostForm
-                        onPost={() => {}}
+                        onPost={fetchData}
                         parent={id}
                         compact
                         placeholder={'Tweet your reply'}
