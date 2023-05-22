@@ -15,8 +15,11 @@ export default async function handler(req, res) {
             res.json({post});
         } else {
             const parent = req.query || null;
+            const author = req.query.author;
+            const searchFilter = author ? {author} : {parent};
+
             const posts = await Post
-                .find({parent:null})
+                .find(searchFilter)
                 .populate('author')
                 .sort({createdAt: -1})
                 .limit(20)
