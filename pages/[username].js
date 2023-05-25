@@ -42,7 +42,7 @@ export default function UserPage() {
                     <div className="px-5 pt-2">
                         <TopNavLink title={profileInfo.name} />
                     </div>
-                    <Cover />
+                    <Cover src={profileInfo.cover} />
                     <div className="flex justify-between">
                         <div className="ml-5 relative">
                             <div className="absolute -top-14 border-2 rounded-full border-black">
