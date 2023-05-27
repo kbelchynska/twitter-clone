@@ -13,6 +13,9 @@ export default function EditableImage({type, src, onChange, className, editable=
   if (!editable) extraClasses = '';
 
   function updateImage(files, e) {
+    if (!editable) {
+        return;
+    }
     e.preventDefault();
     setIsFileNearby(false);
     setIsFileOver(false);
@@ -36,6 +39,10 @@ export default function EditableImage({type, src, onChange, className, editable=
       onDragLeave={() => setIsFileOver(true)}
       onFrameDragEnter={() => setIsFileNearby(true)}
       onFrameDragLeave={() => setIsFileNearby(false)}
+      onFrameDrop={() => {
+        setIsFileNearby(false);
+        setIsFileOver(false);
+      }}
     >
       <div className={"bg-twitterBorder text-white relative"}>
         <div className={"absolute inset-0 " + extraClasses}></div>

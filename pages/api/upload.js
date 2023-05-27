@@ -25,7 +25,8 @@ export default async function handle (req, res) {
         if (err) {
             throw err;
         }
-        const fileInfo = files['cover'][0];
+        const type = Object.keys(files)[0];
+        const fileInfo = files[type][0];
         const filename = fileInfo.path.split('/')[1];
         s3Client.upload({
             Bucket: 'kateryna-twitter-clone',
@@ -35,9 +36,9 @@ export default async function handle (req, res) {
             ContentType: fileInfo.headers['content-type'],
         }, async (err, data) => {
             const user = User.findByIdAndUpdate(session.user.id, {
-                cover: data.Location,
+                [type]: data.Location,
             });
-            res.json({err, data, fileInfo, src: data.Location});
+            res.json({files, err, data, fileInfo, src: data.Location});
         });
 
         res.json(fileInfo);
