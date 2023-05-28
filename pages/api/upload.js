@@ -38,6 +38,7 @@ export default async function handle (req, res) {
             const user = User.findByIdAndUpdate(session.user.id, {
                 [type]: data.Location,
             });
+            fs.unlinkSync(fileInfo.path);
             res.json({files, err, data, fileInfo, src: data.Location});
         });
 

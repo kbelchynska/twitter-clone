@@ -1,20 +1,26 @@
 import { useState } from "react";
 import { FileDrop } from "react-file-drop";
-import {PulseLoader} from 'react-spinners';
+import { PulseLoader } from "react-spinners";
 
-export default function EditableImage({type, src, onChange, className, editable=false}) {
-    const [isFileNearby, setIsFileNearby] = useState(false);
+export default function EditableImage({
+  type,
+  src,
+  onChange,
+  className,
+  editable = false,
+}) {
+  const [isFileNearby, setIsFileNearby] = useState(false);
   const [isFileOver, setIsFileOver] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   let extraClasses = "";
   if (isFileNearby && !isFileOver) extraClasses += " bg-blue-500 opacity-40";
   if (isFileOver) extraClasses += " bg-blue-500 opacity-90";
-  if (!editable) extraClasses = '';
+  if (!editable) extraClasses = "";
 
   function updateImage(files, e) {
     if (!editable) {
-        return;
+      return;
     }
     e.preventDefault();
     setIsFileNearby(false);
@@ -54,11 +60,9 @@ export default function EditableImage({type, src, onChange, className, editable=
             <PulseLoader size={14} color={"#fff"} />
           </div>
         )}
-        {src && (
-          <div className={"flex items-center overflow-hidden "+className}>
-            <img src={src} className="w-full" alt="" />
-          </div>
-        )}
+        <div className={"cover flex items-center overflow-hidden " + className}>
+          {src && <img src={src} className="w-full" alt="" />}
+        </div>
       </div>
     </FileDrop>
   );
