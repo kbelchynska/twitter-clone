@@ -26,6 +26,7 @@ export default function UserPage() {
     axios.get("/api/users?username=" + username).then((response) => {
       setProfileInfo(response.data.user);
       setOriginalUserInfo(response.data.user);
+      setIsFollowing(!!response.data.follow);
     });
   }, [username]);
 
