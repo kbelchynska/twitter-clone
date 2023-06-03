@@ -53,6 +53,16 @@ export default function Home() {
       <div className="">
         {posts.length > 0 && posts.map(post => {
           <div className="border-t border-twitterBorder p-5 ">
+            {post.parent && (
+              <div>
+                <PostContent {...post.parent} />
+                <div className="relative h-8">
+                  <div className="border-l-2 border-twitterBorder h-10 absolute ml-6 -top-4">
+
+                  </div>
+                </div>
+              </div>
+            )}
             <PostContent {...post} likedByMe={idsLikedByMe.includes(post._id)} />
           </div>
         })}

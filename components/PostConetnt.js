@@ -27,13 +27,13 @@ export default function PostContent({
         </div>
         <div className="pl-2 grow">
           <div>
-            <Link href={"/" + author.username}>
+            <Link href={"/" + author?.username}>
               <span className="font-bold pr-1 cursor-pointer">
                 {author.name}
               </span>
             </Link>
             {big && <br />}
-            <Link href={"/" + author.username}>
+            <Link href={"/" + author?.username}>
               <span className="text-twitterLightGray cursor-pointer">
                 @{author.username}
               </span>
@@ -46,7 +46,7 @@ export default function PostContent({
           </div>
           {!big && (
             <div>
-              <Link href={`/${author.username}/status/${_id}`}>
+              <Link href={`/${author?.username}/status/${_id}`}>
                 <div className="w-full cursor-pointer">{text}</div>
               </Link>
               <PostButtons
