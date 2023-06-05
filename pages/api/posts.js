@@ -62,6 +62,7 @@ export default async function handler(req, res) {
       author: session.user.id,
       text,
       parent,
+      images,
     });
     if (parent) {
       const parentPost = await Post.findById(parent);
