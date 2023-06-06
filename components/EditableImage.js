@@ -26,8 +26,8 @@ export default function EditableImage({
     setIsFileNearby(false);
     setIsFileOver(false);
     setIsUploading(true);
-    const data = FormData();
-    data.apend(type, files[0]);
+    const data = new FormData();
+    data.append(type, files[0]);
     fetch("/api/upload", {
       method: "POST",
       body: data,
@@ -42,7 +42,7 @@ export default function EditableImage({
     <FileDrop
       onDrop={updateImage}
       onDragOver={() => setIsFileOver(true)}
-      onDragLeave={() => setIsFileOver(true)}
+      onDragLeave={() => setIsFileOver(false)}
       onFrameDragEnter={() => setIsFileNearby(true)}
       onFrameDragLeave={() => setIsFileNearby(false)}
       onFrameDrop={() => {
@@ -55,7 +55,7 @@ export default function EditableImage({
         {isUploading && (
           <div
             className="absolute inset-0 flex items-center justify-center"
-            style={{ backgroundColor: "rgba(48, 140, 216, 0.9)" }}
+            style={{ backgroundColor: "rgba(48, 140, 216,0.9)" }}
           >
             <PulseLoader size={14} color={"#fff"} />
           </div>
