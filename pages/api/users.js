@@ -1,8 +1,9 @@
-import { unstable_getServerSession } from "next-auth";
+import mongoose from "mongoose";
 import { initMongoose } from "../../lib/mongoose";
 import User from "../../models/User";
+import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./auth/[...nextauth]";
-import Follower from "@/models/Follower";
+import Follower from "../../models/Follower";
 
 export default async function handle(req, res) {
   await initMongoose();
@@ -14,12 +15,12 @@ export default async function handle(req, res) {
     res.json("ok");
   }
   if (req.method === "GET") {
-    const { id, username } = req.query.id;
+    const { id, username } = req.query;
     const user = id
       ? await User.findById(id)
       : await User.findOne({ username });
     const follow = await Follower.findOne({
-      session: session.user.id,
+      source: session.user.id,
       destination: user._id,
     });
     res.json({ user, follow });
